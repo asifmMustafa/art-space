@@ -1,13 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const ArtworkCard = ({ artwork, onDetailsClick, onFavoriteClick }) => {
-  function truncateString(str) {
+const ArtworkCard = ({ artwork, isCart }) => {
+  const navigate = useNavigate();
+
+  const shortenString = (str) => {
     if (str.length > 145) {
       return str.slice(0, 145) + "...";
     } else {
       return str;
     }
-  }
+  };
 
   return (
     <div className="flex flex-row p-4 lg:w-1/3">
@@ -22,19 +25,30 @@ const ArtworkCard = ({ artwork, onDetailsClick, onFavoriteClick }) => {
         <h2 className="tracking-widest text-xs title-font font-medium text-gray-500 mb-1">
           {artwork.category}
         </h2>
-        <h1 className="title-font text-lg font-medium text-gray-900 mb-3">
+        <h1
+          className="title-font text-lg font-medium text-gray-900 mb-3 cursor-pointer hover:text-blue-600"
+          onClick={() => {
+            navigate("/artworkdetail", {
+              state: {
+                artwork: artwork,
+              },
+            });
+          }}
+        >
           {artwork.title}
         </h1>
         <p className="leading-relaxed mb-3">
-          {truncateString(artwork.description)}
+          {shortenString(artwork.description)}
         </p>
         <div className="flex items-center justify-between flex-wrap">
           <span className="text-gray-600 inline-flex items-center text-sm py-1">
             <span className="text-gray-600 ml-1">{artwork.price}</span>
           </span>
-          <span className="text-gray-600 inline-flex items-center text-sm hover:text-blue-600">
-            <button onClick={onFavoriteClick}>Add to Favorites</button>
-          </span>
+          {!isCart && (
+            <span className="text-gray-600 inline-flex items-center text-sm hover:text-blue-600">
+              <button>Add to Favorites</button>
+            </span>
+          )}
         </div>
       </div>
     </div>

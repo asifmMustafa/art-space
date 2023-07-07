@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../components/Header";
 import ArtworkCard from "../components/ArtworkCard";
+import { useUserContext } from "../UserContext";
+import { useNavigate } from "react-router-dom";
 
 const BrowseArtworks = () => {
   const [artworks, setArtworks] = useState([]);
@@ -9,7 +11,15 @@ const BrowseArtworks = () => {
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState("price");
 
+  const navigate = useNavigate();
+
+  const { id } = useUserContext();
+
   useEffect(() => {
+    if (!id) {
+      navigate("/");
+    }
+
     axios.get("http://localhost:4000/api/getArtworks").then((res) => {
       if (res.data.status === "ok") {
         setArtworks(res.data.data);

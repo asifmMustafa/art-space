@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setId } = useUserContext();
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -33,7 +35,8 @@ const Login = () => {
         })
         .then((res) => {
           if (res.data.status === "ok") {
-            alert(res.data.id);
+            setId(res.data.id);
+            navigate("/browse");
           } else {
             alert(res.data.message);
           }
