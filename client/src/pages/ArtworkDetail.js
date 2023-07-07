@@ -15,10 +15,10 @@ const ArtworkDetail = () => {
 
   const navigate = useNavigate();
 
-  const { id } = useUserContext();
+  const { id, cart, setCart } = useUserContext();
 
   const [artistName, setArtistName] = useState("");
-  const [zoomScale, setZoomScale] = useState(1);
+  const [zoomScale, setZoomScale] = useState(1); // initial scale of the image
 
   useEffect(() => {
     if (!id) {
@@ -37,6 +37,15 @@ const ArtworkDetail = () => {
         }
       });
   }, []);
+
+  const handleAddToCart = () => {
+    if (cart.includes(artwork)) {
+      alert("Artwork already in cart!");
+    } else {
+      setCart([...cart, artwork]);
+      alert("Artwork added to cart!");
+    }
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -82,7 +91,10 @@ const ArtworkDetail = () => {
                 <FontAwesomeIcon icon={faMagnifyingGlassMinus} />
               </button>
             </div>
-            <button className="mt-5 px-5 py-2 bg-blue-500 text-white border rounded-md hover:outline-none hover:bg-blue-400 text-lg">
+            <button
+              onClick={handleAddToCart}
+              className="mt-5 px-5 py-2 bg-blue-500 text-white border rounded-md hover:outline-none hover:bg-blue-400 text-lg"
+            >
               Add to Cart
             </button>
           </div>
