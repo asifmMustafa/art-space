@@ -5,7 +5,7 @@ const UserModel = require("./models/user.model");
 const ArtistModel = require("./models/artist.model");
 const ArtworkModel = require("./models/artwork.model");
 
-mongoose.connect("mongodb://localhost:27017/art-space"); // replace localhost with http://127.0.0.1/ if server crashes
+mongoose.connect("mongodb://127.0.0.1:27017/art-space"); // replace localhost with http://127.0.0.1/ if server crashes
 
 const app = express();
 app.use(cors());
