@@ -5,6 +5,8 @@ import Signup from "./pages/Signup";
 import BrowseArtworks from "./pages/BrowseArtworks";
 import ArtworkDetail from "./pages/ArtworkDetail";
 import ArtistProfile from "./pages/ArtistProfile";
+import ArtistAccount from "./pages/ArtistAccount";
+
 
 import { UserContextProvider } from "./UserContext";
 
@@ -18,6 +20,7 @@ function App() {
           <Route exact path="/browse" element={<BrowseArtworks />} />
           <Route exact path="/artworkdetail" element={<ArtworkDetail />} />
           <Route exact path="/artistProfile" element={<ArtistProfile />} />
+          <Route exact path="/artistAccount" element={<ArtistAccount />} />
         </Routes>
       </BrowserRouter>
     </UserContextProvider>
