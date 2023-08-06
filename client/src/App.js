@@ -7,7 +7,7 @@ import ArtworkDetail from "./pages/ArtworkDetail";
 import ArtistProfile from "./pages/ArtistProfile";
 import ArtistAccount from "./pages/ArtistAccount";
 import Favorites from "./pages/Favorites";
-
+import Admin from "./pages/Admin";
 
 import { UserContextProvider } from "./UserContext";
 
@@ -23,6 +23,7 @@ function App() {
           <Route exact path="/artistProfile" element={<ArtistProfile />} />
           <Route exact path="/artistAccount" element={<ArtistAccount />} />
           <Route exact path="/favorites" element={<Favorites />} />
+          <Route exact path="/admin" element={<Admin />} />
         </Routes>
       </BrowserRouter>
     </UserContextProvider>
