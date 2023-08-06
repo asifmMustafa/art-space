@@ -86,6 +86,43 @@ app.post("/api/getArtist", async (req, res) => {
   }
 });
 
+app.post("/api/updateArtist", async (req, res) => {
+  try {
+    const updatedArtist = await ArtistModel.updateOne(
+      { _id: req.body._id },
+      { ...req.body }
+    );
+
+    if (updatedArtist.modifiedCount === 0) {
+      return res.json({
+        status: "error",
+        message: "Update failed. Artist not found.",
+      });
+    }
+
+    res.json({ status: "ok" });
+  } catch (error) {
+    res.json({ status: "error", message: "Update failed." });
+  }
+});
+
+app.post("/api/addArtwork", async (req, res) => {
+  try {
+    await ArtworkModel.create({
+      title: req.body.title,
+      category: req.body.category,
+      price: req.body.price,
+      description: req.body.description,
+      date: req.body.date,
+      imageURL: req.body.imageURL,
+      artist: new mongoose.Types.ObjectId(req.body.artist),
+    });
+    res.json({ status: "ok" });
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to add artwork." });
+  }
+});
+
 app.listen(4000, async () => {
   console.log("SERVER IS RUNNING.");
 });
