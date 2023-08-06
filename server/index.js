@@ -5,6 +5,7 @@ const UserModel = require("./models/user.model");
 const ArtistModel = require("./models/artist.model");
 const ArtworkModel = require("./models/artwork.model");
 
+
 mongoose.connect("mongodb://127.0.0.1:27017/art-space"); // replace localhost with http://127.0.0.1/ if server crashes
 
 const app = express();
@@ -123,6 +124,30 @@ app.post("/api/addArtwork", async (req, res) => {
   }
 });
 
+app.post("/api/addToFavorites", async (req, res) => {
+  const user_id = req.body.user_id;
+  const artwork_id = req.body.artwork_id;
+
+  try {
+    const user = await UserModel.findById(user_id);
+
+    if (user.favorites.includes(artwork_id)) {
+      return res.json({
+        status: "error",
+        message: "Artwork already added to favorites.",
+      });
+    }
+
+    user.favorites.push(artwork_id);
+    await user.save();
+
+    res.json({ status: "ok" });
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to add to favorites." });
+  }
+});
+
 app.listen(4000, async () => {
   console.log("SERVER IS RUNNING.");
 });
+
