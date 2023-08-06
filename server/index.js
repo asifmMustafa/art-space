@@ -123,6 +123,50 @@ app.post("/api/addArtwork", async (req, res) => {
   }
 });
 
+app.get("/api/getUsers", async (req, res) => {
+  try {
+    const users = await UserModel.find({});
+    res.json({ status: "ok", data: users });
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to get users." });
+  }
+});
+
+app.get("/api/getArtists", async (req, res) => {
+  try {
+    const artists = await ArtistModel.find({});
+    res.json({ status: "ok", data: artists });
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to get artists." });
+  }
+});
+
+app.post("/api/deleteArtist", async (req, res) => {
+  try {
+    const response = await ArtistModel.deleteOne({ _id: req.body.id });
+    if (response.deletedCount === 0) {
+      res.json({ status: "error", message: "Failed to delete artist." });
+    } else {
+      res.json({ status: "ok" });
+    }
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to delete artist." });
+  }
+});
+
+app.post("/api/deleteUser", async (req, res) => {
+  try {
+    const response = await UserModel.deleteOne({ _id: req.body.id });
+    if (response.deletedCount === 0) {
+      res.json({ status: "error", message: "Failed to delete user." });
+    } else {
+      res.json({ status: "ok" });
+    }
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to delete user." });
+  }
+});
+
 app.listen(4000, async () => {
   console.log("SERVER IS RUNNING.");
 });
