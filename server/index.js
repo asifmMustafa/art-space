@@ -57,10 +57,43 @@ app.post("/api/loginUser", async (req, res) => {
   }
 });
 
+app.post("/api/getUser", async (req, res) => {
+  const user = await UserModel.findById(req.body.id);
+  if (user) {
+    res.json({ status: "ok", data: user });
+  } else {
+    res.json({ status: "error", message: "Failed to find user." });
+  }
+});
+
+app.get("/api/getUsers", async (req, res) => {
+  try {
+    const users = await UserModel.find({});
+    res.json({ status: "ok", data: users });
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to get users." });
+  }
+});
+
+app.get("/api/getArtists", async (req, res) => {
+  try {
+    const artists = await ArtistModel.find({});
+    res.json({ status: "ok", data: artists });
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to get artists." });
+  }
+});
+
 app.post("/api/addArtwork", async (req, res) => {
   try {
     await ArtworkModel.create({
-      ...req.body,
+      title: req.body.title,
+      category: req.body.category,
+      price: req.body.price,
+      description: req.body.description,
+      date: req.body.date,
+      imageURL: req.body.imageURL,
+      artist: new mongoose.Types.ObjectId(req.body.artist),
     });
     res.json({ status: "ok" });
   } catch (error) {
@@ -68,9 +101,29 @@ app.post("/api/addArtwork", async (req, res) => {
   }
 });
 
+app.post("/api/getArtwork", async (req, res) => {
+  const artwork = await ArtworkModel.findById(req.body.id);
+  if (artwork) {
+    res.json({ status: "ok", data: artwork });
+  } else {
+    res.json({ status: "error", message: "Failed to find artwork." });
+  }
+});
+
 app.get("/api/getArtworks", async (req, res) => {
   try {
     const artworks = await ArtworkModel.find({});
+    res.json({ status: "ok", data: artworks });
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to get artworks." });
+  }
+});
+
+app.post("/api/getMyArtworks", async (req, res) => {
+  try {
+    const artworks = await ArtworkModel.find({
+      artist: req.body.id,
+    });
     res.json({ status: "ok", data: artworks });
   } catch (error) {
     res.json({ status: "error", message: "Failed to get artworks." });
@@ -106,41 +159,6 @@ app.post("/api/updateArtist", async (req, res) => {
   }
 });
 
-app.post("/api/addArtwork", async (req, res) => {
-  try {
-    await ArtworkModel.create({
-      title: req.body.title,
-      category: req.body.category,
-      price: req.body.price,
-      description: req.body.description,
-      date: req.body.date,
-      imageURL: req.body.imageURL,
-      artist: new mongoose.Types.ObjectId(req.body.artist),
-    });
-    res.json({ status: "ok" });
-  } catch (error) {
-    res.json({ status: "error", message: "Failed to add artwork." });
-  }
-});
-
-app.get("/api/getUsers", async (req, res) => {
-  try {
-    const users = await UserModel.find({});
-    res.json({ status: "ok", data: users });
-  } catch (error) {
-    res.json({ status: "error", message: "Failed to get users." });
-  }
-});
-
-app.get("/api/getArtists", async (req, res) => {
-  try {
-    const artists = await ArtistModel.find({});
-    res.json({ status: "ok", data: artists });
-  } catch (error) {
-    res.json({ status: "error", message: "Failed to get artists." });
-  }
-});
-
 app.post("/api/deleteArtist", async (req, res) => {
   try {
     const response = await ArtistModel.deleteOne({ _id: req.body.id });
@@ -164,6 +182,32 @@ app.post("/api/deleteUser", async (req, res) => {
     }
   } catch (error) {
     res.json({ status: "error", message: "Failed to delete user." });
+  }
+});
+
+app.post("/api/deleteArtwork", async (req, res) => {
+  try {
+    const response = await ArtworkModel.deleteOne({ _id: req.body.id });
+    if (response.deletedCount === 0) {
+      res.json({ status: "error", message: "Failed to delete artwork." });
+    } else {
+      res.json({ status: "ok" });
+    }
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to delete artwork." });
+  }
+});
+
+app.post("/api/approveArtwork", async (req, res) => {
+  try {
+    const artwork = await ArtworkModel.findById(req.body.id);
+
+    artwork.approved = true;
+    await artwork.save();
+
+    res.json({ status: "ok" });
+  } catch (error) {
+    res.json({ status: "error", message: "Failed to approve artwork." });
   }
 });
 
