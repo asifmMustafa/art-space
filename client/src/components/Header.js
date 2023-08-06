@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../UserContext";
@@ -6,10 +5,13 @@ import { useUserContext } from "../UserContext";
 function Header() {
   const navigate = useNavigate();
 
-  const { setId } = useUserContext();
+  const { setId, setIs_Artist, is_artist, isAdmin, setIsAdmin } =
+    useUserContext();
 
   const logout = () => {
     setId("");
+    setIs_Artist(false);
+    setIsAdmin(false);
     navigate("/");
   };
 
@@ -19,37 +21,49 @@ function Header() {
         <div
           className="text-3xl font-bold text-gray-900 flex items-center cursor-pointer"
           onClick={() => {
-            navigate("/browse");
+            if (is_artist) {
+              navigate("/artistProfile");
+            } else if (isAdmin) {
+              navigate("/admin");
+            } else {
+              navigate("/browse");
+            }
           }}
         >
           <span>Art </span>
           <span className="text-blue-600">Space</span>
         </div>
         <div className="flex items-center">
-          <span
-            onClick={() => {
-              navigate("/cart");
-            }}
-            className="text-lg text-blue-500 hover:text-blue-600 cursor-pointer mx-3"
-          >
-            Cart
-          </span>
-          <span
-            onClick={() => {
-              navigate("/favorites");
-            }}
-            className="text-lg text-blue-500 hover:text-blue-600 cursor-pointer mx-3"
-          >
-            Favorites
-          </span>
-          <span
-            onClick={() => {
-              navigate("/account");
-            }}
-            className="text-lg text-blue-500 hover:text-blue-600 cursor-pointer mx-3"
-          >
-            Account
-          </span>
+          {!is_artist && !isAdmin && (
+            <span
+              onClick={() => {
+                navigate("/cart");
+              }}
+              className="text-lg text-blue-500 hover:text-blue-600 cursor-pointer mx-3"
+            >
+              Cart
+            </span>
+          )}
+          {!is_artist && !isAdmin && (
+            <span
+              onClick={() => {
+                navigate("/favorites");
+              }}
+              className="text-lg text-blue-500 hover:text-blue-600 cursor-pointer mx-3"
+            >
+              Favorites
+            </span>
+          )}
+          {is_artist && (
+            <span
+              onClick={() => {
+                navigate("/artistAccount");
+              }}
+              className="text-lg text-blue-500 hover:text-blue-600 cursor-pointer mx-3"
+            >
+              Account
+            </span>
+          )}
           <span
             onClick={logout}
             className="text-lg text-blue-500 hover:text-blue-600 cursor-pointer mx-3"

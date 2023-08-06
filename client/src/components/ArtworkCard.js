@@ -1,8 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../UserContext";
+import axios from "axios";
 
 const ArtworkCard = ({ artwork, isCart }) => {
   const navigate = useNavigate();
+
+  const { id, is_artist } = useUserContext();
 
   const shortenString = (str) => {
     if (str.length > 145) {
@@ -10,6 +14,21 @@ const ArtworkCard = ({ artwork, isCart }) => {
     } else {
       return str;
     }
+  };
+
+  const addToFavorites = () => {
+    axios
+      .post("http://localhost:4000/api/addToFavorites", {
+        user_id: id,
+        artwork_id: artwork._id,
+      })
+      .then((res) => {
+        if (res.data.status === "ok") {
+          alert("Added to Favorites!");
+        } else {
+          alert(res.data.message);
+        }
+      });
   };
 
   return (
@@ -44,9 +63,9 @@ const ArtworkCard = ({ artwork, isCart }) => {
           <span className="text-gray-600 inline-flex items-center text-sm py-1">
             <span className="text-gray-600 ml-1">{artwork.price}</span>
           </span>
-          {!isCart && (
+          {!isCart && !is_artist && (
             <span className="text-gray-600 inline-flex items-center text-sm hover:text-blue-600">
-              <button>Add to Favorites</button>
+              <button onClick={addToFavorites}>Add to Favorites</button>
             </span>
           )}
         </div>

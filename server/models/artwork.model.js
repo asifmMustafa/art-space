@@ -12,6 +12,7 @@ const Artwork = new mongoose.Schema({
   description: { type: String, required: true },
   date: { type: String, required: true },
   imageURL: { type: String, required: true },
+  approved: { type: Boolean, required: true },
 });
 
 const ArtworkModel = mongoose.model("Artwork", Artwork);

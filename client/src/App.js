@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import BrowseArtworks from "./pages/BrowseArtworks";
 import ArtworkDetail from "./pages/ArtworkDetail";
+import Cart from "./pages/Cart";
 import ArtistProfile from "./pages/ArtistProfile";
 import ArtistAccount from "./pages/ArtistAccount";
 import Favorites from "./pages/Favorites";
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/browse" element={<BrowseArtworks />} />
           <Route exact path="/artworkdetail" element={<ArtworkDetail />} />
+          <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/artistProfile" element={<ArtistProfile />} />
           <Route exact path="/artistAccount" element={<ArtistAccount />} />
           <Route exact path="/favorites" element={<Favorites />} />

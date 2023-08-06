@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Signup = () => {
   const navigate = useNavigate();
   const uploader = Uploader({
-    apiKey: "public_kW15bTXEHVT6mneVaQLLzRw8FBoZ",
+    apiKey: "public_kW15bah5uL38c9oxs7En75pFj8b8",
   });
 
   const [name, setName] = useState(null);
@@ -38,6 +38,7 @@ const Signup = () => {
         .then((res) => {
           if (res.data.status === "ok") {
             alert("ARTIST CREATED");
+            navigate("/");
           } else {
             alert(res.data.message);
           }

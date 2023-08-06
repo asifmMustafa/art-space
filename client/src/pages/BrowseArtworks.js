@@ -101,18 +101,11 @@ const BrowseArtworks = () => {
           </div>
         </div>
         <div className="flex flex-row flex-wrap">
-          {filterAndSortArtworks().map((artwork) => (
-            <ArtworkCard
-              key={artwork.id}
-              artwork={artwork}
-              onDetailsClick={() => {
-                // navigate function here to go to the details page.
-              }}
-              onFavoriteClick={() => {
-                // Code to add the artwork to favorites.
-              }}
-            />
-          ))}
+          {filterAndSortArtworks().map((artwork) =>
+            artwork.approved ? (
+              <ArtworkCard key={artwork.id} artwork={artwork} />
+            ) : null
+          )}
         </div>
       </div>
     </div>

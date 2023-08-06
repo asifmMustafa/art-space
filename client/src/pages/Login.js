@@ -5,7 +5,7 @@ import { useUserContext } from "../UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setId } = useUserContext();
+  const { setId, setIs_Artist, setIsAdmin } = useUserContext();
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -14,6 +14,13 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (email === "admin@gmail.com" && password === "admin") {
+      setIsAdmin(true);
+      navigate("/admin");
+      return;
+    }
+
     if (isArtist) {
       axios
         .post("http://localhost:4000/api/loginArtist", {
@@ -22,7 +29,9 @@ const Login = () => {
         })
         .then((res) => {
           if (res.data.status === "ok") {
-            alert(res.data.id);
+            setId(res.data.id);
+            setIs_Artist(true);
+            navigate("/artistProfile");
           } else {
             alert(res.data.message);
           }

@@ -15,10 +15,10 @@ const ArtworkDetail = () => {
 
   const navigate = useNavigate();
 
-  const { id, cart, setCart } = useUserContext();
+  const { id, cart, setCart, is_artist } = useUserContext();
 
   const [artistName, setArtistName] = useState("");
-  const [zoomScale, setZoomScale] = useState(1); // initial scale of the image
+  const [zoomScale, setZoomScale] = useState(1);
 
   useEffect(() => {
     if (!id) {
@@ -67,7 +67,16 @@ const ArtworkDetail = () => {
             <h1 className="title-font text-2xl font-medium text-gray-900 mb-3">
               {artwork.title}
             </h1>
-            <h2 className="title-font text-lg font-medium text-gray-700 mb-3">
+            <h2
+              className="title-font text-lg font-medium text-gray-700 mb-3 cursor-pointer hover:text-blue-600"
+              onClick={() => {
+                navigate("/artistProfile", {
+                  state: {
+                    artist_id: artwork.artist,
+                  },
+                });
+              }}
+            >
               Artist: {artistName}
             </h2>
             <h2 className="title-font text-lg font-medium text-gray-700 mb-5">
@@ -91,12 +100,14 @@ const ArtworkDetail = () => {
                 <FontAwesomeIcon icon={faMagnifyingGlassMinus} />
               </button>
             </div>
-            <button
-              onClick={handleAddToCart}
-              className="mt-5 px-5 py-2 bg-blue-500 text-white border rounded-md hover:outline-none hover:bg-blue-400 text-lg"
-            >
-              Add to Cart
-            </button>
+            {!is_artist && (
+              <button
+                onClick={handleAddToCart}
+                className="mt-5 px-5 py-2 bg-blue-500 text-white border rounded-md hover:outline-none hover:bg-blue-400 text-lg"
+              >
+                Add to Cart
+              </button>
+            )}
           </div>
         </div>
       </div>
