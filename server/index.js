@@ -94,6 +94,7 @@ app.post("/api/addArtwork", async (req, res) => {
       date: req.body.date,
       imageURL: req.body.imageURL,
       artist: new mongoose.Types.ObjectId(req.body.artist),
+      approved: req.body.approved,
     });
     res.json({ status: "ok" });
   } catch (error) {
